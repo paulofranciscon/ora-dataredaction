@@ -95,12 +95,9 @@ colaboradores.
 ### 4. Materiais
 Este trabalho foi realizado utilizando os seguintes recursos tecnológicos:
 
- Notebook Dell Inspiron 15 5000, i7 8th Gen, 8Gb RAM, 1TB HD, OS Win10 Pro 64Bits;
-
- VM Linux Oracle 8 - Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64x;
-
- Oracle SQL Developer - Versão 19.2.1.247;
- Oracle Advanced Security;
- Oracle Data Redaction Pack;
- Oracle Data Masking and Subsetting Pack;
-
+  - Notebook Dell Inspiron 15 5000, i7 8th Gen, 8Gb RAM, 1TB HD, OS Win10 Pro 64Bits;
+  - VM Linux Oracle 8 - Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64x;
+  - Oracle SQL Developer - Versão 19.2.1.247;
+  - Oracle Advanced Security;
+  - Oracle Data Redaction Pack;
+  - Oracle Data Masking and Subsetting Pack.
