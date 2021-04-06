@@ -1,6 +1,9 @@
-# Resumo
+## Segurança em ambiente de banco de dados Oracle em conformidade com a LGPD.
+
+# RESUMO
 Este é um resumo do artigo que elaborei e apresentei no meu Trabalho de Conclusão de Curso de Especalização de Engenharia e Administração de Banco de Dados na Unicamp, com o tema "Segurança em ambiente de banco de dados Oracle em conformidade com a LGPD", onde aponto os principais aspectos de segurança da informação das ferramentas da plataforma de banco de dados Oracle e demais técnicas e soluções de gerenciamento e de tratamento dos dados pessoais, contribuintes para o desenvolvimento de Sistemas de Gestão da Segurança Informação, para a blindagem e controle absoluto da informação quanto aos processos de coleta, armazenamento, ciclo de existência da informação e geração de relatórios comprobatórios gerenciais, sob as responsabilidades empresariais e organizacionais, com o foco em atender os princípios impostos das legislações brasileiras sancionadas, a Lei nº 13.709/2018 (LGPD), que regulamenta as atividades de tratamento de dados pessoais e que também complementa e atualiza as regulamentações da Lei nº 12.965/2014 (Marco Civil da Internet), que estabelece vários princípios, garantias, direitos e deveres para a utilização da Internet em nosso país.
 
+## INTRODUÇÃO
 
 # Contexto
 A LGPD (Lei Geral de Proteção dos Dados) entrou em 
@@ -32,8 +35,7 @@ trabalho com a entrada destas novas leis de proteção de dados,
 são de 75.000 novos empregos no mundo, dos quais 28.000 
 levantados somente para a União Europeia, onde surge a 
 crescente demanda e necessidade de contratação de 
-profissionais encarregados da segurança da informação, o DPO 
-- Data Protection Officer. [3]
+profissionais encarregados da segurança da informação, o DPO (Data Protection Officer). [3]
 Para assegurar a proteção no ambiente empresarial, 
 usualmente os bancos de dados são mantidos e administrados 
 através de Sistemas de Gerenciamento de Banco de Dados 
@@ -76,3 +78,5 @@ de dados (Data Masking), que será apresentada de forma
 concisa e objetiva em uma base de dados fictícia, para a 
 proteção de dados sensíveis e confidencias nas formas de dados 
 estáticos e dinâmicos.
+
+
