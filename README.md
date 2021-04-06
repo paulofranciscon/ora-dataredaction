@@ -92,11 +92,13 @@ relatórios gerenciais para auditoria, sobre o seu principal ativo
 considerado, as informações e dados pessoais de seus clientes e 
 colaboradores. 
 
-### 4.Materiais
+### 4. Materiais
 Este trabalho foi realizado utilizando os seguintes recursos tecnológicos:
 
- Notebook Dell Inspiron 15 5000, i7 8th Gen, 8Gb RAM, 1TB HD, OS Win10 Pro 64Bits; 
+ Notebook Dell Inspiron 15 5000, i7 8th Gen, 8Gb RAM, 1TB HD, OS Win10 Pro 64Bits;
+
  VM Linux Oracle 8 - Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64x;
+
  Oracle SQL Developer - Versão 19.2.1.247;
  Oracle Advanced Security;
  Oracle Data Redaction Pack;
