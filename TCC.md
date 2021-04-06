@@ -266,56 +266,113 @@ A estrutura do código a seguir, mostra a função utilizada para a criação da
 
 ``` BEGIN
     DBMS_REDACT.ADD_POLICY(
-    object_schema => 'PAULO',
-    object_name => 'TCC_TEST',
-    column_name => 'CREDENTIAL',
-    policy_name => 'REDACT_ASSOCIATED',
-    funtion_type => DBMS_REDACT.FULL,
-    expression => '0=0';
+    OBJECT_SCHEMA => 'PAULO',
+    OBJECT_NAME => 'TCC_TEST',
+    COLUMN_NAME  => 'CREDENTIAL',
+    POLICY_NAME => 'REDACT_ASSOCIATED',
+    FUNCTION_TYPE => DBMS_REDACT.FULL,
+    EXPRESSION => '0=0');
     END;
     /
 ```
-![](img/figura8.jpg)
-
 Figura 8. Função para a criação da política de mascaramento completa para a coluna CREDENTIAL.
 
 Logo, em uma sessão iniciada como um usuário criado com privilégios de conexão de sessão e consulta dadas pelo administrador do banco de dados, valido o funcionamento da política de mascaramento full na coluna ‘CREDENTIAL’, note que este campo é do tipo varchar, os campos retornados aparecem somente espaço vazios, caso a coluna seja do tipo number eles apareceriam o numérico zero.
 
+
 ![](img/figura9.jpg)
+
 Figura 9. Consultando todos os registros da tabela e conferindo o resultado da política na coluna ‘CREDENTIAL’
 
 Na próxima figura, altero a expressão lógica da política para o desmascaramento dos dados da coluna ‘CREDENTIAL’ para o user ‘PAULO’, desta forma a política permanecerá habilitada no banco de dados para os demais usuários, com exceção do usuário ‘PAULO’ que é proprietário do schema e que visualizará todos os dados reais da coluna.
 
-![](img/figura10.jpg)
+``` BEGIN
+    DBMS_REDACT.ALTER_POLICY(
+    OBJECT_SCHEMA => 'PAULO',
+    OBJECT_NAME => 'TCC_TEST',
+    POLICY_NAME => 'REDACT_ASSOCIATED',
+    ACTION => DBMS_REDACT.MODIFY_EXPRESSION,
+    COLUMN_NAME => 'CREDENTIAL',
+    EXPRESSION => 'SYS_CONTEXT (''USERENV'',''SESSION_USER'') !=''PAULO''');
+    END;
+    /
+```
 Figura 10. Desabilitando a política de mascaramento para um determinado usuário
 
-![](img/figura11.jpg)
+
 Para excluir uma política de mascaramento existente, utiliza-se o script a seguir, informando corretamente os nomes da política, objeto e schema.
+
+``` BEGIN
+    DBMS_REDACT.DROP_POLICY(
+    OBJECT_SCHEMA => 'PAULO',
+    OBJECT_NAME => 'TCC_TEST',
+    POLICY_NAME => 'REDACT_ASSOCIATED'),
+    END;
+    /
+```
 Figura 11. Exclusão da política
 
 ### 2. Mascaramento parcial de dados – Partial Redaction
 O mascaramento parcial dos dados, se define pela substituição dos dados reais por caracteres especiais, e a liberação apenas de alguns dos dados reais para simples conferência ou confirmação dependo da regra de aplicação ou negócio implementado na organização. No exemplo utilizo a coluna ‘PHONE’ do tipo varchar2 e a anonimização para o campo aplicada até o sexto caractere do registro. Note que os parâmetros utilizados, V corresponde ao caractere ‘*’ e F ao ‘-‘.
 
-![](img/figura12.jpg)
+
+``` BEGIN
+    DBMS_REDACT.ADD_POLICY(
+    OBJECT_SCHEMA => 'PAULO',
+    OBJECT_NAME => 'TCC_TEST',
+    COLUMN_NAME => 'PHONE',
+    POLICY_NAME => 'REDACT_ASSOCIATED',
+    FUNCTION_TYPE => DBMS_REDACT.PARTIAL,
+    FUNCTION_PARAMETERS => 'VVVFVVVVFVV, VVV-VVVV-VV, *, 1,6',
+    EXPRESSION => '1=1');
+    END;
+    /
+```
 Figura 12. Adicionando uma nova política parcial de mascaramento de dados
 
 Com a sessão iniciado com um usuário de perfil leitura, executo a query para analisar o funcionamento, selecionando apenas as colunas ‘PHONE’, ‘FIST_NAME’ e ‘LAST_NAME’ para visualizar a funcionalidade da política atribuída na coluna ‘PHONE’.
 
 ![](img/figura13.jpg)
+
 Figura 13. Consultando o estado dos dados mascarados parcialmente da coluna ‘PHONE’
 
 Nesta sessão complemento a política, adicionando a coluna ‘CREDENTIAL’ com a mesma função de máscara, anonimizando os 7 primeiros caracteres deste campo, note que nos parâmetros da função, o V é o caractere que será acoplado por um asterisco, e o F como um hífen separador.
 
-![](img/figura14.jpg)
+``` BEGIN
+    DBMS_REDACT.ALTER_POLICY(
+    OBJECT_SCHEMA => 'PAULO',
+    OBJECT_NAME => 'TCC_TEST',
+    POLICY_NAME => 'REDACT_ASSOCIATED',
+    ACTION => DBMS_REDACT.ADD_COLUMN,
+    COLUMN_NAME => 'CREDENTIAL',
+    FUNCTION_TYPE => DBMS_REDACT.PARTIAL,
+    FUNCTION_PARAMETERS => 'VVVFVVVFVVVV, VVV-VVV-VVVV, *, 1,7',
+    EXPRESSION => '1=1');
+    END;
+    /
+```
 Figura 14. Adicionando a coluna ‘CREDENTIAL’ na política de mascaramento parcial
 
 
 ![](img/figura15.jpg)
+
 Figura 15. Query de consulta dos campos mascarados.
 
 Nesta alteração estou utilizando como parâmetros os valores limites máximos para mascar a coluna ‘SALARY’, desta forma apesar de estar alocado em um tipo de mascaramento parcial, os dados numéricos até 7 dígitos serão mascarados pelo zero.
 
-![](img/figura16.jpg)
+``` BEGIN
+    DBMS_REDACT.ALTER_POLICY(
+    OBJECT_SCHEMA         => 'PAULO',
+    OBJECT_NAME           => 'TCC_TEST',
+    POLICY_NAME           => 'REDACT_ASSOCIATED',
+    ACTION                => DBMS_REDACT.ADD_COLUMN,
+    COLUMN_NAME           => 'SALARY',
+    FUNCTION_TYPE         => DBMS_REDACT.PARTIAL,
+    FUNCTION_PARAMETERS   => '0,1,7',
+    EXPRESSION            => '1=1');
+    END;
+    /
+```
 Figura 16. Adicionando a coluna ‘SALARY’ na política.
 
 ![](img/figura17.jpg)
@@ -325,20 +382,50 @@ Figura 17. Consulta completa para comparar a coluna ‘SALARY’ na política
 
 Nesta sessão será apresentada exemplos de definição de uma política de mascaramento de dados do tipo randômico, como recurso de estratégia, estes dados são gerados aleatoriamente cada vez que são consultados e exibidos em uma query de usuário ou aplicação com privilégios de acesso limitado. Aproveitando todo os processos de mascaramento de dados anteriores, feito na política ‘REDACT_ASSOCIATED’, adiciono a coluna ‘OCCUPATION’ no modo randômico, e destinando o usuário proprietário.
 
-![](img/figura18.jpg)
+``` BEGIN
+    DBMS_REDACT.ALTER_POLICY(
+    OBJECT_SCHEMA   => 'PAULO',
+    OBJECT_NAME     => 'TCC_TEST',
+    POLICY_NAME     => 'REDACT_ASSOCIATED',
+    ACTION          => DBMS_REDACT.ADD_COLUMN,
+    COLUMN_NAME     => 'OCCUPATION',
+    FUNCTION_TYPE   => DBMS_REDACT.RANDOM,
+    EXPRESSION      => 'SYS_CONTEXT(''USERENV'',''SESSION_USER'') = ''PAULO''');
+    END;
+    /
+```
 Figura 18. Script alterando a política existente e adicionando a coluna ‘OCCUPATION’ no modo randômico.
 
 ![](img/figura19.jpg)
+
 Figura 19. Consulta efetuada após a atribuição do recurso randômico na política.
 
 ### 4.	Mascaramento de dados baseado em expressões regulares
 
 O mascaramento de dados baseado nas expressões regulares, permite a adoção do mascaramento nos padrões conforme a necessidade de exposição dos dados considerados sensíveis, nesta sessão, agora na coluna ‘EMAIL’, apresento o modelo do tipo de mascaramento do endereço do email e mantenho apenas o domínio.
 
-![](img/figura20.jpg)
+``` BEGIN
+    DBMS_REDACT.ALTER_POLICY(
+    OBJECT_SCHEMA         => 'PAULO',
+    OBJECT_NAME           => 'TCC_TEST',
+    POLICY_NAME           => 'REDACT_ASSOCIATED',
+    ACTION                => DBMS_REDACT.MODIFY_COLUMN,
+    COLUMN_NAME           => 'EMAIL',
+    FUNCTION_TYPE         => DBMS_REDACT.REGEXP,
+    REGEXP_PATTERN        => DBMS_REDACT.RE_PATTERN_EMAIL_ADDRESS,
+    REGEXP_REPLACE_STRING => DBMS_REDACT.RE_REDACT_EMAIL_NAME,
+    REGEXP_POSITION       => DBMS_REDACT.RE_BEGINNING,
+    REGEXP_OCCURRENCE     => DBMS_REDACT.RE_ALL,
+    EXPRESSION            => '1=1'
+    );
+    END;
+    /
+```
+
 Figura 20. Adicionando o recuso de mascaramento através dos padrões regulares na política.
 
 ![](img/figura21.jpg)
+
 Figura 21. Consultas efetuadas após a atribuição dos recursos de expressões regulares na coluna ‘EMAIL’.
 
 ## IV.  RESULTADOS E ANÁLISE
@@ -348,12 +435,49 @@ A ideia central deste estudo, é demonstrar os conceitos fundamentais de proteç
 ### 1.	Políticas Ativas
 A visualização das políticas ativas tem como objetivo a auditoria casual para a checagem e listagem rápida dos acessos e das funções ativas destinadas, que poderá auxiliar no gerenciamento e planejamento de definição das formas de mascaramento dos dados e seus permissionamentos dos acessos das aplicações e usuários. Note que o resultado do script abaixo, corresponde a política nomeada como ‘redact_associated’, criada nos processos anteriores apresentados no capítulo de desenvolvimento, onde seleciono as colunas necessárias para apreciação da atividade da função de mascaramento, visualizada na tabela ‘redaction_policies’ para listagem dos parâmetros e referências.
 
-![](img/figura22.jpg)
+```
+COLUMN OBJECT_OWNER FORMAT A20
+COLUMN OBJECT_NAME FORMAT A30
+COLUMN POLICY_NAME FORMAT A30
+COLUMN EXPRESSION FORMAT A30
+COLUMN POLICY_DESCRIPTION FORMAT A20
+
+SELECT OBJECT_OWNER, 
+       OBJECT_NAME, 
+       POLICY_NAME, 
+       EXPRESSION, 
+       ENABLE, 
+       POLICY_DESCRIPTION
+
+FROM REDACTION_POLICIES
+
+ORDER BY 1, 2, 3;
+```
+
 Figura 22. Script para a verificação das políticas existentes 
 
 O script na sequência, permite a visualização das colunas ativas, os parâmetros e o tipo da função de mascaramento ativo no objeto correspondente. 
 
-![](img/figura23.jpg)
+```
+COLUMN OBJECT_OWNER FORMAT A20
+COLUMN OBJECT_NAME FORMAT A30
+COLUMN COLUMN_NAME FORMAT A30
+COLUMN FUNCTION_PARAMETERS FORMAT A30
+COLUMN REGEXP_PATTERN FORMAT A30
+COLUMN REGEXP_REPLACE_STRING FORMAT A30
+COLUMN COLUMN_DESCRIPTION FORMAT A20
+
+SELECT OBJECT_OWNER, 
+       OBJECT_NAME, 
+       COLUMN_NAME,
+       FUNCTION_TYPE,
+       FUNCTION_PARAMETERS
+
+FROM REDACTION_COLUMNS
+
+ORDER BY 1, 2, 3;
+```
+
 Figura 23. Script para a verificação das colunas habilitadas
 
 ## V.  CONCLUSÃO
