@@ -264,7 +264,19 @@ Figura 7. Resultado parcial da seleção completa da tabela TCC_TEST sem a polí
 
 A estrutura do código a seguir, mostra a função utilizada para a criação da política de mascaramento do Data Redaction, no exemplo os parâmetros, indico o nome do esquema como ‘PAULO’, nome do objeto ‘TCC_TEST’ que é o objeto tabela, nome da coluna a ser mascarada ‘CREDENTIAL’, nomeação da política ‘REDACT_ASSOCIATED’, o tipo da função indicando o parâmetro de mascaramento completo dos dados ‘DBMS_REDACT.FULL’, e a expressão ‘1 = 1’ significa que a redação sempre ocorrerá, estas expressões situacionais podem ser definidas também usando a função ‘SYS_CONTEXT’. 
 
+``` BEGIN
+    DBMS_REDACT.ADD_POLICY(
+    object_schema => 'PAULO',
+    object_name => 'TCC_TEST',
+    column_name => 'CREDENTIAL',
+    policy_name => 'REDACT_ASSOCIATED',
+    funtion_type => DBMS_REDACT.FULL,
+    expression => '0=0';
+    END;
+    /
+```
 ![](img/figura8.jpg)
+
 Figura 8. Função para a criação da política de mascaramento completa para a coluna CREDENTIAL.
 
 Logo, em uma sessão iniciada como um usuário criado com privilégios de conexão de sessão e consulta dadas pelo administrador do banco de dados, valido o funcionamento da política de mascaramento full na coluna ‘CREDENTIAL’, note que este campo é do tipo varchar, os campos retornados aparecem somente espaço vazios, caso a coluna seja do tipo number eles apareceriam o numérico zero.
