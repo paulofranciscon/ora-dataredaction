@@ -258,75 +258,75 @@ Listando todos os dados reais da tabela ‘TCC_TEST’ como referência e ordena
 
 ``` PAULO> SELECT * FROM TCC_TEST ORDER BY FIRST_NAME ```
 
-![](img/figura7.png)
+![](img/figura7.jpg)
 
 Figura 7. Resultado parcial da seleção completa da tabela TCC_TEST sem a política de mascaramento.
 
 A estrutura do código a seguir, mostra a função utilizada para a criação da política de mascaramento do Data Redaction, no exemplo os parâmetros, indico o nome do esquema como ‘PAULO’, nome do objeto ‘TCC_TEST’ que é o objeto tabela, nome da coluna a ser mascarada ‘CREDENTIAL’, nomeação da política ‘REDACT_ASSOCIATED’, o tipo da função indicando o parâmetro de mascaramento completo dos dados ‘DBMS_REDACT.FULL’, e a expressão ‘1 = 1’ significa que a redação sempre ocorrerá, estas expressões situacionais podem ser definidas também usando a função ‘SYS_CONTEXT’. 
 
-![](img/figura8.png)
+![](img/figura8.jpg)
 Figura 8. Função para a criação da política de mascaramento completa para a coluna CREDENTIAL.
 
 Logo, em uma sessão iniciada como um usuário criado com privilégios de conexão de sessão e consulta dadas pelo administrador do banco de dados, valido o funcionamento da política de mascaramento full na coluna ‘CREDENTIAL’, note que este campo é do tipo varchar, os campos retornados aparecem somente espaço vazios, caso a coluna seja do tipo number eles apareceriam o numérico zero.
 
-![](img/figura9.png)
+![](img/figura9.jpg)
 Figura 9. Consultando todos os registros da tabela e conferindo o resultado da política na coluna ‘CREDENTIAL’
 
 Na próxima figura, altero a expressão lógica da política para o desmascaramento dos dados da coluna ‘CREDENTIAL’ para o user ‘PAULO’, desta forma a política permanecerá habilitada no banco de dados para os demais usuários, com exceção do usuário ‘PAULO’ que é proprietário do schema e que visualizará todos os dados reais da coluna.
 
-![](img/figura10.png)
+![](img/figura10.jpg)
 Figura 10. Desabilitando a política de mascaramento para um determinado usuário
 
-![](img/figura11.png)
+![](img/figura11.jpg)
 Para excluir uma política de mascaramento existente, utiliza-se o script a seguir, informando corretamente os nomes da política, objeto e schema.
 Figura 11. Exclusão da política
 
 ### 2. Mascaramento parcial de dados – Partial Redaction
 O mascaramento parcial dos dados, se define pela substituição dos dados reais por caracteres especiais, e a liberação apenas de alguns dos dados reais para simples conferência ou confirmação dependo da regra de aplicação ou negócio implementado na organização. No exemplo utilizo a coluna ‘PHONE’ do tipo varchar2 e a anonimização para o campo aplicada até o sexto caractere do registro. Note que os parâmetros utilizados, V corresponde ao caractere ‘*’ e F ao ‘-‘.
 
-![](img/figura12.png)
+![](img/figura12.jpg)
 Figura 12. Adicionando uma nova política parcial de mascaramento de dados
 
 Com a sessão iniciado com um usuário de perfil leitura, executo a query para analisar o funcionamento, selecionando apenas as colunas ‘PHONE’, ‘FIST_NAME’ e ‘LAST_NAME’ para visualizar a funcionalidade da política atribuída na coluna ‘PHONE’.
 
-![](img/figura13.png)
+![](img/figura13.jpg)
 Figura 13. Consultando o estado dos dados mascarados parcialmente da coluna ‘PHONE’
 
 Nesta sessão complemento a política, adicionando a coluna ‘CREDENTIAL’ com a mesma função de máscara, anonimizando os 7 primeiros caracteres deste campo, note que nos parâmetros da função, o V é o caractere que será acoplado por um asterisco, e o F como um hífen separador.
 
-![](img/figura14.png)
+![](img/figura14.jpg)
 Figura 14. Adicionando a coluna ‘CREDENTIAL’ na política de mascaramento parcial
 
 
-![](img/figura15.png)
+![](img/figura15.jpg)
 Figura 15. Query de consulta dos campos mascarados.
 
 Nesta alteração estou utilizando como parâmetros os valores limites máximos para mascar a coluna ‘SALARY’, desta forma apesar de estar alocado em um tipo de mascaramento parcial, os dados numéricos até 7 dígitos serão mascarados pelo zero.
 
-![](img/figura16.png)
+![](img/figura16.jpg)
 Figura 16. Adicionando a coluna ‘SALARY’ na política.
 
-![](img/figura17.png)
+![](img/figura17.jpg)
 Figura 17. Consulta completa para comparar a coluna ‘SALARY’ na política
 
 ### 3.	Mascaramento randômico de dados – Random Redaction
 
 Nesta sessão será apresentada exemplos de definição de uma política de mascaramento de dados do tipo randômico, como recurso de estratégia, estes dados são gerados aleatoriamente cada vez que são consultados e exibidos em uma query de usuário ou aplicação com privilégios de acesso limitado. Aproveitando todo os processos de mascaramento de dados anteriores, feito na política ‘REDACT_ASSOCIATED’, adiciono a coluna ‘OCCUPATION’ no modo randômico, e destinando o usuário proprietário.
 
-![](img/figura18.png)
+![](img/figura18.jpg)
 Figura 18. Script alterando a política existente e adicionando a coluna ‘OCCUPATION’ no modo randômico.
 
-![](img/figura19.png)
+![](img/figura19.jpg)
 Figura 19. Consulta efetuada após a atribuição do recurso randômico na política.
 
 ### 4.	Mascaramento de dados baseado em expressões regulares
 
 O mascaramento de dados baseado nas expressões regulares, permite a adoção do mascaramento nos padrões conforme a necessidade de exposição dos dados considerados sensíveis, nesta sessão, agora na coluna ‘EMAIL’, apresento o modelo do tipo de mascaramento do endereço do email e mantenho apenas o domínio.
 
-![](img/figura20.png)
+![](img/figura20.jpg)
 Figura 20. Adicionando o recuso de mascaramento através dos padrões regulares na política.
 
-![](img/figura21.png)
+![](img/figura21.jpg)
 Figura 21. Consultas efetuadas após a atribuição dos recursos de expressões regulares na coluna ‘EMAIL’.
 
 ## IV.  RESULTADOS E ANÁLISE
@@ -336,12 +336,12 @@ A ideia central deste estudo, é demonstrar os conceitos fundamentais de proteç
 ### 1.	Políticas Ativas
 A visualização das políticas ativas tem como objetivo a auditoria casual para a checagem e listagem rápida dos acessos e das funções ativas destinadas, que poderá auxiliar no gerenciamento e planejamento de definição das formas de mascaramento dos dados e seus permissionamentos dos acessos das aplicações e usuários. Note que o resultado do script abaixo, corresponde a política nomeada como ‘redact_associated’, criada nos processos anteriores apresentados no capítulo de desenvolvimento, onde seleciono as colunas necessárias para apreciação da atividade da função de mascaramento, visualizada na tabela ‘redaction_policies’ para listagem dos parâmetros e referências.
 
-![](img/figura22.png)
+![](img/figura22.jpg)
 Figura 22. Script para a verificação das políticas existentes 
 
 O script na sequência, permite a visualização das colunas ativas, os parâmetros e o tipo da função de mascaramento ativo no objeto correspondente. 
 
-![](img/figura23.png)
+![](img/figura23.jpg)
 Figura 23. Script para a verificação das colunas habilitadas
 
 ## V.  CONCLUSÃO
