@@ -166,7 +166,7 @@ dados que sigam parâmetros adequados de proteção à
 privacidade, o que pode abrir novos mercados para empresas 
 brasileiras". [10]
 
-## 3. Família de Normas ISO 27000 – Padrões de Segurança da Informação
+### 3. Família de Normas ISO 27000 – Padrões de Segurança da Informação
 
 Os dados e informações para as organizações em geral são 
 consideradas ativos de grande importância para o sucesso e 
@@ -210,8 +210,7 @@ controles de acessos físico e lógico, criptografia, segurança de
 operações e comunicação, manutenção de sistemas e gestão de 
 incidentes e conformidade com as normas e a legislação. [11]
 
-4. Ferramentas e Aspectos de Segurança 
-- Oracle Database 
+### 4. Ferramentas e Aspectos de Segurança - Oracle Database 
 As ferramentas tecnológicas da Oracle dispõem de diversas 
 técnicas e camadas de segurança para o monitoramento de 
 atividades e avaliações de riscos, proteção no armazenamento
