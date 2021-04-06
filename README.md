@@ -79,4 +79,26 @@ concisa e objetiva em uma base de dados fictícia, para a
 proteção de dados sensíveis e confidencias nas formas de dados 
 estáticos e dinâmicos.
 
+### 3. Motivação
+A motivação para a realização deste trabalho é auxiliar e 
+orientar empresas e profissionais da área ao enquadramento das 
+exigências da Lei Geral de Proteção de Dados mediante os 
+recursos e ferramentas da plataforma Oracle, e precaver dos 
+indícios e riscos existentes, fortalecendo as camadas de 
+segurança e proteção, orientado dos recursos de monitoria e 
+gerenciamento de atividades de banco de dados, criptografia e 
+mascaramento dos dados, controle de acessos e atividades, 
+relatórios gerenciais para auditoria, sobre o seu principal ativo 
+considerado, as informações e dados pessoais de seus clientes e 
+colaboradores. 
+
+### 4.Materiais
+Este trabalho foi realizado utilizando os seguintes recursos tecnológicos:
+
+ Notebook Dell Inspiron 15 5000, i7 8th Gen, 8Gb RAM, 1TB HD, OS Win10 Pro 64Bits; 
+ VM Linux Oracle 8 - Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64x;
+ Oracle SQL Developer - Versão 19.2.1.247;
+ Oracle Advanced Security;
+ Oracle Data Redaction Pack;
+ Oracle Data Masking and Subsetting Pack;
 
