@@ -101,3 +101,125 @@ Este trabalho foi realizado utilizando os seguintes recursos tecnológicos:
   - Oracle Advanced Security;
   - Oracle Data Redaction Pack;
   - Oracle Data Masking and Subsetting Pack.
+
+### 5. Metodologia do Trabalho
+Este trabalho foi realizado nas seguintes etapas:
+  - Coleta de informações e necessidades de adaptações corporativas;
+  - Estudo de conteúdo, normas e legislação brasileira correlacionadas à Segurança da Informação;
+  - Estudo das ferramentas de gerenciamento e controle da plataforma Oracle e definição do recurso foco para o trabalho;
+  - Modelagem e definição de banco de dados de fonte fictícia;
+  - Estudo da documentação da plataforma e desenvolvimento de códigos e scripts ETL (Extract Transform Load), para a criação da tablespace, usuários, permissões, tabela, e para testes das funcionalidades dos recursos na implantação do mascaramento de dados, e visualização em tempo real.
+ 
+
+## II. REVISÃO DE TECNOLOGIAS E PRÁTICAS
+### 1. Lei Geral de Proteção de Dados Pessoais (LGPD)
+O processo deu início em 2010 junto aos Ministérios Público 
+e Legislativo, através de uma consulta pública sobre o tema que 
+abrange a segurança e a proteção dos dados pessoais, resultando 
+a propositura do PL 5276/2016, anexado ao PL 4060/2012, 
+perante a Câmara dos Deputados. No dia 10 de julho de 2018, 
+foi aprovado no plenário do Senado Federal o PLC 53/2018, o 
+qual dispõe sobre a proteção de dados pessoais e altera a Lei 
+12.965/16 (Marco Civil da Internet), consolidando-se assim 
+como a Lei Geral de Proteção de Dados brasileira (LGPD). [7]
+A LGPD entrou em vigor em agosto de 2020, e estabelece 
+regras, padrões e princípios para as organizações cujo suas 
+atividades são exercidas em território nacional, para o formal
+tratamento dos dados pessoais sob tal posse, com os principais 
+objetivos de regulamentar à segurança e proteção dos direitos 
+fundamentais de liberdade e privacidade dos dados 
+identificáveis e sensíveis da pessoa natural. Determinando ao 
+titular do dado, o direito da gratuidade aos privilégios 
+majoritários e especiais de pertinência à sua informação, de seu 
+ciclo de existência e armazenamento, da conscientização de uso
+e finalidade, ter conhecimento e cobertura de quais foram os 
+acessos e para quem estes dados foram compartilhados, e como 
+está sendo gerenciada a forma de tratamento e se as medidas 
+adotadas para a prevenção da integridade e segurança de seus
+dados pessoais estão em conformidade com as normativas de 
+Segurança da Informação e da vigência da Lei.
+Inspirada na Lei da União Europeia, aprovada em 15 de abril 
+de 2016, e após dois anos, sua entrada em vigor ocorreu em 25 
+de maio de 2018, o Regulamento Geral de Proteção de Dados 
+(GDPR), regulamento (EU) 2016/6791. Neste ano de 2018, 
+após o escândalo de utilização indevida de dados de usuários do 
+Facebook pela empresa Cambridge Analytica, a pauta passou a 
+ocupar destaque na mídia internacional e a preocupar governos 
+e empresas em geral. O escândalo levou o FBI a investigar 
+possíveis irregularidades na eleição norte-americana, 
+demonstrando a importância do tema. No Brasil, o assunto foi 
+escolhido como tema para a redação do ENEM, que se focou na 
+manipulação de comportamento dos usuários pelos controles de 
+dados da Internet. [8]
+
+### 2. Autoridade Nacional de Proteção de Dados (ANPD)
+Após ementa de alteração promovida pela Lei n° 13.853 de 
+09 de julho de 2019, foi criada a autoridade pública autônoma 
+e independente para a supervisão da aplicação de lei. [9]
+Declarou Secretaria Geral da Presidência da República por 
+meio de uma nota: "A criação da ANPD é um importante passo 
+tanto para dar a segurança jurídica necessária aos entes públicos 
+e privados que realizam operações de tratamento de dados 
+pessoais e que terão que se adequar ao previsto pela LGPD, 
+como também para viabilizar transferências internacionais de 
+dados que sigam parâmetros adequados de proteção à 
+privacidade, o que pode abrir novos mercados para empresas 
+brasileiras". [10]
+
+## 3. Família de Normas ISO 27000 – Padrões de Segurança da Informação
+
+Os dados e informações para as organizações em geral são 
+consideradas ativos de grande importância para o sucesso e 
+sustentação dos negócios, devido ao crescimento em massa 
+destes dados e a acessibilidade pública de recursos tecnológicos
+conectados globalmente, a preocupação em manter a segurança 
+tem sido um assunto preocupante e pautado nas organizações.
+As normas ISO 27000, foram desenvolvidas para o dar 
+suporte e consistência às organizações, através de uma 
+sistemática de boas práticas, na proteção de dados e 
+informações, implementando como principal elemento, o 
+Sistema de Gestão de Segurança da Informação – SGSI, 
+composto por orientações e definições de processos, políticas, 
+planejamento, gerenciamento de ativos e tomadas decisórias 
+com o objetivo de garantir e assegurar o atendimento dos 
+principais pilares e princípios da segurança da informação, a 
+confidencialidade, integridade e disponibilidade - CID.
+Como requisito a norma 27001 atende uma organização 
+visando a implementação e melhora na gestão da segurança da 
+informação (SI) atendendo aos princípios do CID e suas 
+informações que demandam tanto o contexto da organização 
+quanto as inserções de elementos de segurança no ambiente de 
+negócios, em relação ao planejamento estratégico, à operação e 
+à auditoria. Influenciando na definição dos controles de 
+segurança, planejamento e gestão da SI, além dos processos 
+executados pela equipe operacional, avaliação do desempenho 
+e melhoria contínua da gestão de segurança na organização. 
+Análise de documentação do SGSI e seus diferentes elementos 
+de implementação e modelos de gestão. 
+A norma ISO 27002, são orientações que reúnem boas 
+práticas que facilitam a implementação efetiva de todos os 
+controles de segurança da informação (SI) requeridos pela
+norma ISO 27001, garantindo um nível apropriado de 
+segurança nas organizações. 
+
+Estruturada em seções, e itens que tratam da aplicação das 
+normas ISO 27000, aplicação das práticas políticas de 
+segurança, organização interna, dispositivos móveis, trabalhos
+remotos, segurança de recursos humanos, gestão de ativos, 
+controles de acessos físico e lógico, criptografia, segurança de 
+operações e comunicação, manutenção de sistemas e gestão de 
+incidentes e conformidade com as normas e a legislação. [11]
+
+4. Ferramentas e Aspectos de Segurança 
+- Oracle Database 
+As ferramentas tecnológicas da Oracle dispõem de diversas 
+técnicas e camadas de segurança para o monitoramento de 
+atividades e avaliações de riscos, proteção no armazenamento
+para anonimização e mascaramento dos dados, prevenção de
+vazamentos e corrupção, controle e armazenamento seguro de 
+chaves criptografadas, criptografia de dados transparente, 
+firewall de controle de acessos, auditorias e monitoramento das 
+atividades realizadas nos bancos de dados. Com base nos 
+princípios da LGPD, a plataforma Oracle dispõe de todos os 
+recursos perante os requisitos exigidos abordados pelas Leis
+mundiais de proteção de dados.
