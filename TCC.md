@@ -393,3 +393,4 @@ O trabalho possui aplicabilidade ampla aos diversos processos e fases de planeja
 
 [18] Funcionalidade Data Redaction - Oracle Database 12c. Disponível em: <https://www.oracle.com/br/technical-resources/articles/idm/functionality-data-redaction-12c.html>. Acesso em: out. 2020.
 
+  
