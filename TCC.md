@@ -264,7 +264,8 @@ Figura 7. Resultado parcial da seleção completa da tabela TCC_TEST sem a polí
 
 A estrutura do código a seguir, mostra a função utilizada para a criação da política de mascaramento do Data Redaction, no exemplo os parâmetros, indico o nome do esquema como ‘PAULO’, nome do objeto ‘TCC_TEST’ que é o objeto tabela, nome da coluna a ser mascarada ‘CREDENTIAL’, nomeação da política ‘REDACT_ASSOCIATED’, o tipo da função indicando o parâmetro de mascaramento completo dos dados ‘DBMS_REDACT.FULL’, e a expressão ‘1 = 1’ significa que a redação sempre ocorrerá, estas expressões situacionais podem ser definidas também usando a função ‘SYS_CONTEXT’. 
 
-``` BEGIN
+``` 
+    BEGIN
     DBMS_REDACT.ADD_POLICY(
     OBJECT_SCHEMA => 'PAULO',
     OBJECT_NAME => 'TCC_TEST',
@@ -275,7 +276,6 @@ A estrutura do código a seguir, mostra a função utilizada para a criação da
     END;
     /
 ```
-Figura 8. Função para a criação da política de mascaramento completa para a coluna CREDENTIAL.
 
 Logo, em uma sessão iniciada como um usuário criado com privilégios de conexão de sessão e consulta dadas pelo administrador do banco de dados, valido o funcionamento da política de mascaramento full na coluna ‘CREDENTIAL’, note que este campo é do tipo varchar, os campos retornados aparecem somente espaço vazios, caso a coluna seja do tipo number eles apareceriam o numérico zero.
 
@@ -286,7 +286,8 @@ Figura 9. Consultando todos os registros da tabela e conferindo o resultado da p
 
 Na próxima figura, altero a expressão lógica da política para o desmascaramento dos dados da coluna ‘CREDENTIAL’ para o user ‘PAULO’, desta forma a política permanecerá habilitada no banco de dados para os demais usuários, com exceção do usuário ‘PAULO’ que é proprietário do schema e que visualizará todos os dados reais da coluna.
 
-``` BEGIN
+```
+    BEGIN
     DBMS_REDACT.ALTER_POLICY(
     OBJECT_SCHEMA => 'PAULO',
     OBJECT_NAME => 'TCC_TEST',
@@ -297,12 +298,11 @@ Na próxima figura, altero a expressão lógica da política para o desmascarame
     END;
     /
 ```
-Figura 10. Desabilitando a política de mascaramento para um determinado usuário
-
 
 Para excluir uma política de mascaramento existente, utiliza-se o script a seguir, informando corretamente os nomes da política, objeto e schema.
 
-``` BEGIN
+```      
+    BEGIN
     DBMS_REDACT.DROP_POLICY(
     OBJECT_SCHEMA => 'PAULO',
     OBJECT_NAME => 'TCC_TEST',
@@ -310,13 +310,14 @@ Para excluir uma política de mascaramento existente, utiliza-se o script a segu
     END;
     /
 ```
-Figura 11. Exclusão da política
+
 
 ### 2. Mascaramento parcial de dados – Partial Redaction
 O mascaramento parcial dos dados, se define pela substituição dos dados reais por caracteres especiais, e a liberação apenas de alguns dos dados reais para simples conferência ou confirmação dependo da regra de aplicação ou negócio implementado na organização. No exemplo utilizo a coluna ‘PHONE’ do tipo varchar2 e a anonimização para o campo aplicada até o sexto caractere do registro. Note que os parâmetros utilizados, V corresponde ao caractere ‘*’ e F ao ‘-‘.
 
 
-``` BEGIN
+``` 
+    BEGIN
     DBMS_REDACT.ADD_POLICY(
     OBJECT_SCHEMA => 'PAULO',
     OBJECT_NAME => 'TCC_TEST',
@@ -328,7 +329,7 @@ O mascaramento parcial dos dados, se define pela substituição dos dados reais 
     END;
     /
 ```
-Figura 12. Adicionando uma nova política parcial de mascaramento de dados
+
 
 Com a sessão iniciado com um usuário de perfil leitura, executo a query para analisar o funcionamento, selecionando apenas as colunas ‘PHONE’, ‘FIST_NAME’ e ‘LAST_NAME’ para visualizar a funcionalidade da política atribuída na coluna ‘PHONE’.
 
@@ -338,7 +339,8 @@ Figura 13. Consultando o estado dos dados mascarados parcialmente da coluna ‘P
 
 Nesta sessão complemento a política, adicionando a coluna ‘CREDENTIAL’ com a mesma função de máscara, anonimizando os 7 primeiros caracteres deste campo, note que nos parâmetros da função, o V é o caractere que será acoplado por um asterisco, e o F como um hífen separador.
 
-``` BEGIN
+```    
+    BEGIN
     DBMS_REDACT.ALTER_POLICY(
     OBJECT_SCHEMA => 'PAULO',
     OBJECT_NAME => 'TCC_TEST',
@@ -351,7 +353,6 @@ Nesta sessão complemento a política, adicionando a coluna ‘CREDENTIAL’ com
     END;
     /
 ```
-Figura 14. Adicionando a coluna ‘CREDENTIAL’ na política de mascaramento parcial
 
 
 ![](img/figura15.jpg)
@@ -360,7 +361,8 @@ Figura 15. Query de consulta dos campos mascarados.
 
 Nesta alteração estou utilizando como parâmetros os valores limites máximos para mascar a coluna ‘SALARY’, desta forma apesar de estar alocado em um tipo de mascaramento parcial, os dados numéricos até 7 dígitos serão mascarados pelo zero.
 
-``` BEGIN
+```    
+    BEGIN
     DBMS_REDACT.ALTER_POLICY(
     OBJECT_SCHEMA         => 'PAULO',
     OBJECT_NAME           => 'TCC_TEST',
@@ -373,7 +375,6 @@ Nesta alteração estou utilizando como parâmetros os valores limites máximos 
     END;
     /
 ```
-Figura 16. Adicionando a coluna ‘SALARY’ na política.
 
 ![](img/figura17.jpg)
 Figura 17. Consulta completa para comparar a coluna ‘SALARY’ na política
@@ -382,7 +383,8 @@ Figura 17. Consulta completa para comparar a coluna ‘SALARY’ na política
 
 Nesta sessão será apresentada exemplos de definição de uma política de mascaramento de dados do tipo randômico, como recurso de estratégia, estes dados são gerados aleatoriamente cada vez que são consultados e exibidos em uma query de usuário ou aplicação com privilégios de acesso limitado. Aproveitando todo os processos de mascaramento de dados anteriores, feito na política ‘REDACT_ASSOCIATED’, adiciono a coluna ‘OCCUPATION’ no modo randômico, e destinando o usuário proprietário.
 
-``` BEGIN
+``` 
+    BEGIN
     DBMS_REDACT.ALTER_POLICY(
     OBJECT_SCHEMA   => 'PAULO',
     OBJECT_NAME     => 'TCC_TEST',
@@ -394,7 +396,7 @@ Nesta sessão será apresentada exemplos de definição de uma política de masc
     END;
     /
 ```
-Figura 18. Script alterando a política existente e adicionando a coluna ‘OCCUPATION’ no modo randômico.
+
 
 ![](img/figura19.jpg)
 
@@ -404,7 +406,8 @@ Figura 19. Consulta efetuada após a atribuição do recurso randômico na polí
 
 O mascaramento de dados baseado nas expressões regulares, permite a adoção do mascaramento nos padrões conforme a necessidade de exposição dos dados considerados sensíveis, nesta sessão, agora na coluna ‘EMAIL’, apresento o modelo do tipo de mascaramento do endereço do email e mantenho apenas o domínio.
 
-``` BEGIN
+``` 
+    BEGIN
     DBMS_REDACT.ALTER_POLICY(
     OBJECT_SCHEMA         => 'PAULO',
     OBJECT_NAME           => 'TCC_TEST',
@@ -422,7 +425,7 @@ O mascaramento de dados baseado nas expressões regulares, permite a adoção do
     /
 ```
 
-Figura 20. Adicionando o recuso de mascaramento através dos padrões regulares na política.
+
 
 ![](img/figura21.jpg)
 
@@ -454,8 +457,6 @@ FROM REDACTION_POLICIES
 ORDER BY 1, 2, 3;
 ```
 
-Figura 22. Script para a verificação das políticas existentes 
-
 O script na sequência, permite a visualização das colunas ativas, os parâmetros e o tipo da função de mascaramento ativo no objeto correspondente. 
 
 ```
@@ -477,8 +478,6 @@ FROM REDACTION_COLUMNS
 
 ORDER BY 1, 2, 3;
 ```
-
-Figura 23. Script para a verificação das colunas habilitadas
 
 ## V.  CONCLUSÃO
 
